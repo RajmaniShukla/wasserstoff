@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
-from chatbot import generate_response
+from chatbot import RAGChatbot()
 
 app = Flask(__name__)
+chatbot = RAGChatbot()
 
 @app.route('/suggest', methods=['POST'])
 def suggest():
@@ -12,7 +13,7 @@ def suggest():
         return jsonify({"error": "No query provided"}), 400
 
     # Generate a suggestion based on the user's query
-    suggestion = generate_response(user_query)
+    suggestion = chatbot.generate_response(user_query)
     
     return jsonify({"suggestion": suggestion})
 
