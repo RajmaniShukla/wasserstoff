@@ -1,7 +1,7 @@
 # rag_chatbot.py
 
 from transformers import RagTokenizer, RagRetriever, RagSequenceForGeneration
-import torch
+#import torch
 
 class RAGChatbot:
     def __init__(self):
