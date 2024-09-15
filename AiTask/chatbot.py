@@ -1,32 +1,25 @@
-# rag_chatbot.py
+# chatbot.py
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+import torch
 
-from transformers import RagTokenizer, RagRetriever, RagSequenceForGeneration
-#import torch
+class Chatbot:
+    def __init__(self, model_name='gpt2'):
+        self.tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+        self.model = GPT2LMHeadModel.from_pretrained(model_name)
+        self.MAX_INPUT_LENGTH = 512
+        self.MAX_OUTPUT_LENGTH = 100
 
-class RAGChatbot:
-    def __init__(self):
-        # Initialize tokenizer, retriever, and model
-        self.tokenizer = RagTokenizer.from_pretrained("facebook/rag-sequence-nq")
-        self.retriever = RagRetriever.from_pretrained(
-            "facebook/rag-sequence-nq",
-            use_dummy_dataset=True,  # Use dummy dataset for simplicity
-            trust_remote_code=True   # Trust remote code for loading dataset
-        )
-        self.model = RagSequenceForGeneration.from_pretrained("facebook/rag-sequence-nq")
-
-    def generate_response(self, query):
-        # Tokenize the input query
-        inputs = self.tokenizer(query, return_tensors="pt")
-
-        # Retrieve documents relevant to the query
-        retrieved_docs = self.retriever(inputs['input_ids'], return_tensors="pt")
-
-        # Generate a response using the model and the retrieved documents
+    def generate_response(self, prompt):
+        inputs = self.tokenizer.encode(prompt, return_tensors='pt', max_length=self.MAX_INPUT_LENGTH, truncation=True)
         outputs = self.model.generate(
-            input_ids=inputs['input_ids'],
-            context_input_ids=retrieved_docs['context_input_ids']
+            inputs,
+            max_length=self.MAX_INPUT_LENGTH + self.MAX_OUTPUT_LENGTH,
+            num_return_sequences=1,
+            early_stopping=True,
+            temperature=0.7,  # Adjust temperature for randomness
+            top_k=50,         # Control the diversity of the generated text
+            top_p=0.95,       # Nucleus sampling: cumulative probability threshold
+            no_repeat_ngram_size=2  # Prevent repetition of n-grams
         )
-
-        # Decode the generated response
         response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
         return response
