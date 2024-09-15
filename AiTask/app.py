@@ -1,29 +1,19 @@
 from flask import Flask, request, jsonify
-from transformers import RagTokenizer, RagRetriever, RagSequenceForGeneration
+from chatbot import generate_response
 
-# Initialize the RAG model and tokenizer
-tokenizer = RagTokenizer.from_pretrained("facebook/rag-sequence-nq")
-retriever = RagRetriever.from_pretrained("facebook/rag-sequence-nq",use_dummy_dataset=True)
-model = RagSequenceForGeneration.from_pretrained("facebook/rag-sequence-nq")
-
-# Initialize Flask
 app = Flask(__name__)
-
-def generate_suggestions(query):
-    inputs = tokenizer(query, return_tensors="pt")
-    generated = model.generate(**inputs)
-    suggestion = tokenizer.batch_decode(generated, skip_special_tokens=True)
-    return suggestion[0]
 
 @app.route('/suggest', methods=['POST'])
 def suggest():
-    data = request.get_json()
-    query = data.get('query', '')
-    
-    if not query:
+    data = request.json
+    user_query = data.get('query', '')
+
+    if not user_query:
         return jsonify({"error": "No query provided"}), 400
 
-    suggestion = generate_suggestions(query)
+    # Generate a suggestion based on the user's query
+    suggestion = generate_response(user_query)
+    
     return jsonify({"suggestion": suggestion})
 
 if __name__ == '__main__':

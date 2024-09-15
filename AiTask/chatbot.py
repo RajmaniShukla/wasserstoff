@@ -6,13 +6,13 @@ import torch
 class RAGChatbot:
     def __init__(self):
         # Initialize tokenizer, retriever, and model
-        self.tokenizer = RagTokenizer.from_pretrained("facebook/rag-token-base")
+        self.tokenizer = RagTokenizer.from_pretrained("facebook/rag-sequence-nq")
         self.retriever = RagRetriever.from_pretrained(
-            "facebook/rag-token-base",
+            "facebook/rag-sequence-nq",
             use_dummy_dataset=True,  # Use dummy dataset for simplicity
             trust_remote_code=True   # Trust remote code for loading dataset
         )
-        self.model = RagSequenceForGeneration.from_pretrained("facebook/rag-token-base")
+        self.model = RagSequenceForGeneration.from_pretrained("facebook/rag-sequence-nq")
 
     def generate_response(self, query):
         # Tokenize the input query
