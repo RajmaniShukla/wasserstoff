@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: WP Chatbot
+Plugin Name: WordPress Chatbot
 Description: Integrate a chatbot into your WordPress site.
 Version: 1.0
-Author: Your Name
+Author: Raj Mani Shukla
 */
 
 // Enqueue chatbot script

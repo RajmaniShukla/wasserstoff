@@ -7,7 +7,7 @@ jQuery(document).ready(function($) {
         var query = $('#chat-query').val();
         
         $.ajax({
-            url: 'http://127.0.0.1:5000/chat',  // Adjust the URL if needed
+            url: 'http://127.0.0.1:5000/suggest',  
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ query: query }),
