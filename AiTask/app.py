@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from chatbot import RAGChatbot()
+from chatbot import RAGChatbot
 
 app = Flask(__name__)
 chatbot = RAGChatbot()
