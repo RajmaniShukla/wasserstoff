@@ -1,10 +1,12 @@
 # app.py
 from flask import Flask, request, jsonify
 from chatbot import Chatbot
+from flask_cors import CORS
 
 # Initialize Flask application
 app = Flask(__name__)
 
+CORS(app)
 # Initialize the chatbot instance
 chatbot = Chatbot()
 

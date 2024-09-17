@@ -1,6 +1,6 @@
 # chatbot.py
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
-#import torch
+import torch
 
 class Chatbot:
     def __init__(self, model_name='gpt2'):
@@ -34,4 +34,5 @@ class Chatbot:
         )
         # Decode the generated tokens to a readable string
         response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+        print(response)
         return response
