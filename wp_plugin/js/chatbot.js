@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
             contentType: 'application/json',
             data: JSON.stringify({ query: query }),
             success: function(response) {
-                $('#chat-response').text(response.response);
+                $('#chat-response').text(response.suggestion);
             },
             error: function() {
                 $('#chat-response').text('Error occurred. Please try again.');
